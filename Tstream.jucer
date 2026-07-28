@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="nS7r34m1" name="Tstream" projectType="audioplug" version="1.0.0"
+              bundleIdentifier="com.troydev.tstream" companyName="TroyDev"
+              companyCopyright="TroyDev" useAppConfig="0" addUsingNamespaceToJuceHeader="1"
+              jucerFormatVersion="1" displaySplashScreen="0" pluginFormats="buildVST3"
+              pluginCharacteristicsValue="" pluginName="Tstream" pluginDesc="Stream audio over the network between DAW instances"
+              pluginManufacturer="TroyDev" pluginManufacturerCode="Tdev" pluginCode="NStr"
+              pluginChannelConfigs="{1, 1}, {2, 2}" pluginVST3Category="Fx">
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022" extraDefs="JUCE_IGNORE_VST3_MISMATCHED_PARAMETER_ID_WARNING=1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" targetName="Tstream"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="Tstream"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="../../Downloads/juce-9.0.0-windows/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MAINGROUP id="nS7r34m1Grp" name="Tstream">
+    <GROUP id="{8A3B1C10-1111-4A11-9A11-000000000001}" name="Source">
+      <FILE id="pF01" name="PacketFormat.h" compile="0" resource="0" file="Source/PacketFormat.h"/>
+      <FILE id="pF02" name="NetworkStreamer.h" compile="0" resource="0" file="Source/NetworkStreamer.h"/>
+      <FILE id="pF03" name="NetworkStreamer.cpp" compile="1" resource="0"
+            file="Source/NetworkStreamer.cpp"/>
+      <FILE id="pF04" name="PluginProcessor.h" compile="0" resource="0" file="Source/PluginProcessor.h"/>
+      <FILE id="pF05" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="pF06" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="pF07" name="PluginEditor.cpp" compile="1" resource="0" file="Source/PluginEditor.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_WASAPI="1" JUCE_DIRECTSOUND="1" JUCE_ASIO="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1"/>
+    <MODULE id="juce_audio_processors_headless" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1"/>
+    <MODULE id="juce_core" showAllCode="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1"/>
+    <MODULE id="juce_events" showAllCode="1"/>
+    <MODULE id="juce_graphics" showAllCode="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
