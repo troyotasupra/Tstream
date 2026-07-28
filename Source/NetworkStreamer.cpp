@@ -42,6 +42,45 @@ namespace
 NetworkStreamer::NetworkStreamer()
 {
     fifoBuffer.setSize (NetStream::kMaxChannels, fifo.getTotalSize());
+
+    // Rolling log next to the user's other app data. FileLogger trims the file
+    // back to the given size on construction, so this can't grow without
+    // bound across sessions.
+    const auto logFile = juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+                             .getChildFile ("Tstream")
+                             .getChildFile ("tstream-plugin.log");
+    diagnosticLog = std::make_unique<juce::FileLogger> (logFile, "Tstream plugin log", 256 * 1024);
+}
+
+bool NetworkStreamer::isSendWorkerRunning() const noexcept
+{
+    return sendWorkerThread != nullptr && sendWorkerThread->isThreadRunning();
+}
+
+// Called from the send worker thread only. Self-throttles to one line every
+// 5 seconds, matching the OBS receiver's cadence so the two logs line up by
+// wall-clock timestamp when correlating a failure across both ends.
+void NetworkStreamer::writeDiagnosticLine()
+{
+    if (diagnosticLog == nullptr)
+        return;
+
+    const auto now = juce::Time::currentTimeMillis();
+    if (now - lastDiagnosticLogMs < 5000)
+        return;
+
+    lastDiagnosticLogMs = now;
+
+    juce::String line;
+    line << "send stats: blocks=" << (int) audioBlocksProcessed.load()
+         << " sent=" << (int) packetsSent.load()
+         << " writeFail=" << (int) socketWriteFailures.load()
+         << " queueOverflow=" << (int) sendQueueOverflows.load()
+         << " peerAlive=" << (isPeerAlive() ? 1 : 0)
+         << " peak=" << juce::String (localPeakLevel.load(), 4)
+         << " -> " << remoteHostForSend << ":" << remotePortForSend;
+
+    diagnosticLog->logMessage (line);
 }
 
 NetworkStreamer::~NetworkStreamer()
@@ -223,6 +262,11 @@ void NetworkStreamer::processSendBlock (const juce::AudioBuffer<float>& buffer, 
     const int numSamples = buffer.getNumSamples();
     if (numSamples <= 0)
         return;
+
+    // Proves the host is still driving us. If this stalls while the socket
+    // reports no errors, the plugin stopped being called - which is a host/
+    // routing question, not a networking one.
+    audioBlocksProcessed.fetch_add (1, std::memory_order_relaxed);
 
     const int numCh = juce::jlimit (1, NetStream::kMaxChannels, buffer.getNumChannels());
 
@@ -551,18 +595,31 @@ void NetworkStreamer::SendWorkerThread::run()
             {
                 const int written = owner.sendSocket->write (owner.remoteHostForSend, owner.remotePortForSend,
                                                                pkt.data, pkt.size);
-                if (written > 0 && pkt.size >= (int) sizeof (uint32_t))
+                if (written > 0)
                 {
-                    uint32_t magic = 0;
-                    std::memcpy (&magic, pkt.data, sizeof (magic));
-                    if (magic == NetStream::kMagic)
-                        owner.packetsSent.fetch_add (1);
+                    if (pkt.size >= (int) sizeof (uint32_t))
+                    {
+                        uint32_t magic = 0;
+                        std::memcpy (&magic, pkt.data, sizeof (magic));
+                        if (magic == NetStream::kMagic)
+                            owner.packetsSent.fetch_add (1);
+                    }
+                }
+                else
+                {
+                    // A failing socket was previously invisible - write()'s
+                    // return was only ever used to decide whether to count a
+                    // success, so an endlessly-failing socket looked exactly
+                    // like an idle one from outside.
+                    owner.socketWriteFailures.fetch_add (1);
                 }
             }
 
             owner.sendFifo.finishedRead (1);
             sentAny = true;
         }
+
+        owner.writeDiagnosticLine();
 
         // Opportunistically check for incoming status packets from the
         // receiver. Also paces the loop when idle (bounded wake latency).

@@ -74,7 +74,10 @@ TstreamAudioProcessorEditor::TstreamAudioProcessorEditor (TstreamAudioProcessor&
     receiveButton.setToggleState (currentMode == NetworkStreamer::Mode::receive, juce::dontSendNotification);
     updateFieldEnablement();
 
-    setSize (360, 340);
+    // Tall enough for the full status block. At the previous 340px the
+    // fixed-height rows above left the status label only ~9px, so it was
+    // clipped to nothing - the diagnostics are useless if they don't fit.
+    setSize (360, 420);
     startTimerHz (30);
 }
 
@@ -129,7 +132,7 @@ void TstreamAudioProcessorEditor::resized()
     localPortEditor.setBounds (row);
     area.removeFromTop (14);
 
-    auto meterRow = area.removeFromTop (120);
+    auto meterRow = area.removeFromTop (100);
     const int meterWidth = meterRow.getWidth() / 2;
     localMeter.setBounds (meterRow.removeFromLeft (meterWidth).reduced (6, 0));
     remoteMeter.setBounds (meterRow.reduced (6, 0));
@@ -210,8 +213,15 @@ void TstreamAudioProcessorEditor::timerCallback()
     switch (processor.getMode())
     {
         case NetworkStreamer::Mode::send:
-            text << "Packets sent: " << (int) streamer.getPacketsSent() << "\n"
+            // Host-block count sits first deliberately: if the stream stops,
+            // the first thing to check is whether the DAW is still calling
+            // the plugin at all, which looks identical to a network failure
+            // from the receiving end.
+            text << "Host blocks: " << (int) streamer.getAudioBlocksProcessed() << "\n"
+                 << "Packets sent: " << (int) streamer.getPacketsSent() << "\n"
+                 << "Socket write failures: " << (int) streamer.getSocketWriteFailures() << "\n"
                  << "Send queue overflows: " << (int) streamer.getSendQueueOverflows() << "\n"
+                 << "Sender thread: " << (streamer.isSendWorkerRunning() ? "running" : "STOPPED") << "\n"
                  << (streamer.isPeerAlive() ? "Peer confirmed receiving" : "No confirmation from peer yet");
             break;
 

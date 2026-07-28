@@ -62,6 +62,18 @@ public:
     uint32_t getLastReceivedChannels() const noexcept   { return lastReceivedChannels.load(); }
     bool isReceiverBound() const noexcept          { return receiverBound.load(); }
 
+    // Diagnostics for the "stream stops mid-session" failure. These exist to
+    // tell apart the causes that look identical from the receiving end (the
+    // packet counter simply stops climbing):
+    //   - the host stopped calling processBlock  -> audioBlocksProcessed stalls
+    //   - the socket started refusing writes     -> socketWriteFailures climbs
+    //   - the queue backed up                    -> sendQueueOverflows climbs
+    //   - the worker thread died                 -> isSendWorkerRunning() false
+    // Without these all four are indistinguishable after the fact.
+    uint32_t getSocketWriteFailures() const noexcept { return socketWriteFailures.load(); }
+    uint32_t getAudioBlocksProcessed() const noexcept { return audioBlocksProcessed.load(); }
+    bool isSendWorkerRunning() const noexcept;
+
     // Metering, safe to poll from the message thread. Linear peak amplitude,
     // roughly 0..1+; convert to dB for display.
     float getLocalPeakLevel() const noexcept  { return localPeakLevel.load(); }
@@ -176,8 +188,20 @@ private:
     int declickFadeSamples = 0; // computed in prepare()
     std::array<float, NetStream::kMaxChannels> lastOutputSample {};
 
+    // Appends a periodic stats line to a log file so a failure that happens
+    // while the user is looking at OBS (not at this plugin's window) still
+    // leaves a record. Deliberately called only from the send worker thread
+    // and the message thread - never from the audio thread, since it does
+    // real file I/O.
+    void writeDiagnosticLine();
+
+    std::unique_ptr<juce::FileLogger> diagnosticLog;
+    juce::int64 lastDiagnosticLogMs = 0;
+
     // --- shared stats ---
     std::atomic<uint32_t> packetsSent { 0 };
+    std::atomic<uint32_t> socketWriteFailures { 0 };
+    std::atomic<uint32_t> audioBlocksProcessed { 0 };
     std::atomic<uint32_t> packetsReceived { 0 };
     std::atomic<uint32_t> packetsDropped { 0 };
     std::atomic<uint32_t> underruns { 0 };
