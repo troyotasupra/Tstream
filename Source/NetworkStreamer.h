@@ -188,12 +188,50 @@ private:
     int declickFadeSamples = 0; // computed in prepare()
     std::array<float, NetStream::kMaxChannels> lastOutputSample {};
 
+    // --- drift-correcting resampler (audio/receive thread only) ---
+    //
+    // Does two jobs at once. The obvious one is rate conversion: WASAPI shared
+    // mode locks the output device to the endpoint's Default Format, so a
+    // 44.1kHz DAW feeding a 48kHz endpoint would otherwise play back sharp.
+    //
+    // The subtle one is drift. Sender and receiver clocks never tick at
+    // exactly the same rate, so the fifo inevitably walks to one end -
+    // starving (a silence gap) or overflowing (a discarded chunk). Both are
+    // audible, and no buffer size prevents either, because it is a rate
+    // mismatch and not a jitter problem. Absorbing it as a sub-0.5% deviation
+    // on the resampling ratio spreads the correction across every sample
+    // instead, which is inaudible. This replaces the old hard-discard, which
+    // fixed the latency but produced a click every time it fired.
+    static constexpr double kMaxRatioDeviation = 0.005; // +/-0.5%
+
+    double deviceSampleRate = 48000.0; // set in prepare(), read by the ratio calc
+    double playbackRatio = 1.0;
+    double srcPhase = 0.0;
+    std::array<float, NetStream::kMaxChannels> prevFrame {};
+    std::array<float, NetStream::kMaxChannels> curFrame {};
+    bool haveCurrentFrame = false;
+
+    // Exact number of input frames the resample loop will consume to produce
+    // numFrames of output at the current ratio. Computed up front so the fifo
+    // is read by precisely that amount - reading a rounded-up guess and
+    // dropping the remainder would itself leak frames and cause drift, which
+    // is the very thing this is here to remove.
+    int inputFramesNeededFor (int numFrames, double ratio) const noexcept;
+
     // Appends a periodic stats line to a log file so a failure that happens
     // while the user is looking at OBS (not at this plugin's window) still
     // leaves a record. Deliberately called only from the send worker thread
     // and the message thread - never from the audio thread, since it does
     // real file I/O.
     void writeDiagnosticLine();
+
+    // Receive-side counterpart, called from the receiver thread on the same
+    // 5-second cadence. Exists because the receive path had no off-GUI record
+    // at all: a drift or resampling fault shows up as a slow trend in fifo
+    // fill and underruns, which is exactly the kind of thing nobody catches by
+    // glancing at a window, and which the send-side log could never reveal.
+    void writeReceiveDiagnosticLine();
+    juce::int64 lastReceiveLogMs = 0;
 
     std::unique_ptr<juce::FileLogger> diagnosticLog;
     juce::int64 lastDiagnosticLogMs = 0;

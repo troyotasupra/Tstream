@@ -83,6 +83,35 @@ void NetworkStreamer::writeDiagnosticLine()
     diagnosticLog->logMessage (line);
 }
 
+void NetworkStreamer::writeReceiveDiagnosticLine()
+{
+    if (diagnosticLog == nullptr)
+        return;
+
+    const auto now = juce::Time::currentTimeMillis();
+    if (now - lastReceiveLogMs < 5000)
+        return;
+
+    lastReceiveLogMs = now;
+
+    const int fill = fifo.getNumReady();
+    const int rate = (int) lastReceivedSampleRate.load();
+
+    juce::String line;
+    line << "recv stats: received=" << (int) packetsReceived.load()
+         << " dropped=" << (int) packetsDropped.load()
+         << " underruns=" << (int) underruns.load()
+         << " overruns=" << (int) overruns.load()
+         << " fillFrames=" << fill
+         << " fillMs=" << (rate > 0 ? (fill * 1000) / rate : 0)
+         << " inRate=" << rate
+         << " devRate=" << (int) deviceSampleRate
+         << " ratio=" << juce::String (playbackRatio, 6)
+         << " peak=" << juce::String (localPeakLevel.load(), 4);
+
+    diagnosticLog->logMessage (line);
+}
+
 NetworkStreamer::~NetworkStreamer()
 {
     stop();
@@ -98,6 +127,13 @@ void NetworkStreamer::prepare (double sampleRate, int /*maxBlockSize*/)
     // write into the old memory.
     const juce::ScopedLock sl (reconfigureLock);
     stop();
+
+    deviceSampleRate = sampleRate > 0.0 ? sampleRate : 48000.0;
+    srcPhase = 0.0;
+    playbackRatio = 1.0;
+    haveCurrentFrame = false;
+    prevFrame.fill (0.0f);
+    curFrame.fill (0.0f);
 
     const int capacity = juce::jmax (8192, (int) (sampleRate * 2.0));
     fifo.setTotalSize (capacity);
@@ -322,6 +358,33 @@ void NetworkStreamer::processSendBlock (const juce::AudioBuffer<float>& buffer, 
     }
 }
 
+// Walks the same phase accumulator the resample loop uses, without touching
+// any state, to find out exactly how many input frames it will consume. Kept
+// deliberately as a mirror of that loop rather than a closed-form estimate:
+// the two must agree exactly, and a formula that is off by one occasionally is
+// indistinguishable from clock drift once it has run for a few minutes.
+int NetworkStreamer::inputFramesNeededFor (int numFrames, double ratio) const noexcept
+{
+    double phase = srcPhase;
+    int consumed = 0;
+
+    if (! haveCurrentFrame)
+        ++consumed; // the loop primes itself with one frame before producing
+
+    for (int i = 0; i < numFrames; ++i)
+    {
+        while (phase >= 1.0)
+        {
+            ++consumed;
+            phase -= 1.0;
+        }
+
+        phase += ratio;
+    }
+
+    return consumed + 1; // +1: the interpolator always needs the frame ahead
+}
+
 void NetworkStreamer::processReceiveBlock (juce::AudioBuffer<float>& buffer)
 {
     // Same rationale as processSendBlock(): never block waiting on a
@@ -354,41 +417,98 @@ void NetworkStreamer::processReceiveBlock (juce::AudioBuffer<float>& buffer)
         }
     }
 
-    // Clock-drift correction: the sender and receiver each have their own
-    // independent audio clock, which never match exactly. Left uncorrected,
-    // a faster sender slowly grows this backlog forever, adding more and
-    // more latency over the course of a session (not just the intended
-    // jitter-buffer cushion). If the backlog has grown well past target,
-    // silently discard the excess to pull latency back down.
-    const int readyNow = fifo.getNumReady();
-    const int driftCeiling = primeThresholdSamples * 4;
-    if (readyNow > driftCeiling)
-    {
-        const int excess = readyNow - primeThresholdSamples;
-        int dt1, ds1, dt2, ds2;
-        fifo.prepareToRead (excess, dt1, ds1, dt2, ds2);
-        fifo.finishedRead (ds1 + ds2);
-    }
+    // Rate conversion and drift correction in one step. base handles the
+    // nominal difference (a 44.1kHz stream into a 48kHz endpoint); the
+    // correction term absorbs the residual disagreement between the sender's
+    // and receiver's hardware clocks. The fifo is a pure integrator, so
+    // proportional control on its fill level holds it steady - the offset it
+    // settles at is exactly the point where the ratio matches the true clock
+    // difference, which is what we want. The error is normalised and clamped
+    // so a large transient can't demand more correction than is inaudible.
+    const uint32_t incomingRate = lastReceivedSampleRate.load();
+    const double base = (incomingRate > 0 && deviceSampleRate > 0.0)
+                          ? (double) incomingRate / deviceSampleRate
+                          : 1.0;
 
-    int start1, size1, start2, size2;
-    fifo.prepareToRead (numSamples, start1, size1, start2, size2);
-    const int available = size1 + size2;
+    const double targetFill = juce::jmax (1, primeThresholdSamples);
+    const double normalisedError = juce::jlimit (-1.0, 1.0,
+                                                 ((double) fifo.getNumReady() - targetFill) / targetFill);
+
+    playbackRatio = base * (1.0 + kMaxRatioDeviation * normalisedError);
 
     const int numCh = buffer.getNumChannels();
+    const int fifoCh = fifoBuffer.getNumChannels();
 
-    auto copyRange = [&] (int destOffset, int fifoStart, int count)
+    // Read exactly what the loop below will consume, no more: rounding up and
+    // discarding the remainder would leak frames every block and reintroduce
+    // the drift this is here to remove.
+    const int needed = inputFramesNeededFor (numSamples, playbackRatio);
+
+    int start1, size1, start2, size2;
+    fifo.prepareToRead (needed, start1, size1, start2, size2);
+    const int availableIn = size1 + size2;
+
+    // Pulls the i'th readable input frame for channel ch out of the fifo's two
+    // (possibly wrapped) regions.
+    auto readInput = [&] (int index, int ch) -> float
     {
-        for (int ch = 0; ch < numCh; ++ch)
-        {
-            const int srcCh = juce::jmin (ch, fifoBuffer.getNumChannels() - 1);
-            buffer.copyFrom (ch, destOffset, fifoBuffer, srcCh, fifoStart, count);
-        }
+        const int srcCh = juce::jmin (ch, fifoCh - 1);
+        return index < size1 ? fifoBuffer.getSample (srcCh, start1 + index)
+                             : fifoBuffer.getSample (srcCh, start2 + (index - size1));
     };
 
-    if (size1 > 0) copyRange (0, start1, size1);
-    if (size2 > 0) copyRange (size1, start2, size2);
+    int consumed = 0;
+    int produced = 0;
+    bool starved = false;
 
-    fifo.finishedRead (available);
+    for (int i = 0; i < numSamples && ! starved; ++i)
+    {
+        while (srcPhase >= 1.0 || ! haveCurrentFrame)
+        {
+            if (consumed >= availableIn)
+            {
+                starved = true;
+                break;
+            }
+
+            for (int ch = 0; ch < numCh; ++ch)
+                prevFrame[(size_t) juce::jmin (ch, (int) prevFrame.size() - 1)]
+                    = curFrame[(size_t) juce::jmin (ch, (int) curFrame.size() - 1)];
+
+            for (int ch = 0; ch < numCh; ++ch)
+                curFrame[(size_t) juce::jmin (ch, (int) curFrame.size() - 1)] = readInput (consumed, ch);
+
+            ++consumed;
+
+            if (! haveCurrentFrame)
+            {
+                haveCurrentFrame = true;
+                prevFrame = curFrame;
+                srcPhase = 0.0;
+                break;
+            }
+
+            srcPhase -= 1.0;
+        }
+
+        if (starved)
+            break;
+
+        const float t = (float) srcPhase;
+
+        for (int ch = 0; ch < numCh; ++ch)
+        {
+            const size_t idx = (size_t) juce::jmin (ch, (int) curFrame.size() - 1);
+            buffer.setSample (ch, i, prevFrame[idx] + (curFrame[idx] - prevFrame[idx]) * t);
+        }
+
+        ++produced;
+        srcPhase += playbackRatio;
+    }
+
+    fifo.finishedRead (consumed);
+
+    const int available = produced;
 
     // Fade in the first block after re-buffering, instead of jumping
     // straight from silence to whatever amplitude the first real sample
@@ -430,6 +550,13 @@ void NetworkStreamer::processReceiveBlock (juce::AudioBuffer<float>& buffer)
         }
 
         primed.store (false, std::memory_order_relaxed); // re-buffer rather than limp along starved
+
+        // Restart the interpolator too. Leaving stale prev/cur frames behind
+        // would make the first block after re-buffering interpolate between
+        // the old audio and the new, across whatever silence gap just
+        // occurred.
+        haveCurrentFrame = false;
+        srcPhase = 0.0;
     }
 
     for (int ch = 0; ch < numCh; ++ch)
@@ -496,6 +623,8 @@ void NetworkStreamer::ReceiverThread::run()
 
     while (! threadShouldExit())
     {
+        owner.writeReceiveDiagnosticLine(); // self-throttled to one line / 5s
+
         const int ready = socket.waitUntilReady (true, 200);
         if (ready <= 0)
             continue;

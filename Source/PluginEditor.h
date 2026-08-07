@@ -109,6 +109,59 @@ private:
     juce::Label localPortLabel;
     juce::TextEditor localPortEditor;
 
+    // MUST be a runtime check, not #if JucePlugin_Build_Standalone. Both the
+    // VST3 and the standalone link the same SharedCode library, which is
+    // compiled once with JucePlugin_Build_Standalone=1 AND
+    // JucePlugin_Build_VST3=1 - so a preprocessor guard here is true in both
+    // and leaks the standalone-only controls into the plugin window.
+    const bool isStandalone;
+
+    // Output fader and device picker are standalone-only. In send mode the
+    // VST3 is an insert on the master chain, so a fader in that window would
+    // silently attenuate the DAW's own output - the one place this plugin
+    // must stay bit-transparent. Device selection is likewise the host's job
+    // inside a DAW, so a picker there would be a lie.
+    juce::Label gainLabel;
+    juce::Slider gainSlider;
+    juce::TextButton muteButton { "MUTE" };
+
+    void refreshOutputDevices();
+    void applyOutputDevice();
+    void persistSettings();
+    void unmuteWrapperInput();
+
+    // Capture is opened only while in SEND mode, so the app never holds the
+    // audio interface's input side while it is merely receiving - which is
+    // almost all the time, and exactly when a DAW wants that interface.
+    void refreshInputDevices();
+    void applyInputDevice();
+
+    void refreshMonitorDevices();
+    void applyMonitorDevice();
+
+    juce::Label outputDeviceLabel;
+    juce::ComboBox outputDeviceBox;
+
+    juce::Label inputDeviceLabel;
+    juce::ComboBox inputDeviceBox;
+
+    // Second output, so the user can hear what is going out without it
+    // sharing the streaming device. Off by default - it costs a whole extra
+    // audio device, and the normal streaming case does not want it.
+    juce::Label monitorLabel;
+    juce::ComboBox monitorDeviceBox;
+    juce::TextButton monitorButton { "LISTEN" };
+    juce::String monitorError;
+
+    // Plugin-side only: the standalone IS the receiver, so offering to launch
+    // one from inside it would be nonsense.
+    juce::ToggleButton autoLaunchButton { "Auto-start receiver app" };
+
+    // Surfaced in the status block rather than a modal: a device that refuses
+    // to open (already held exclusively, unplugged, rate unsupported) otherwise
+    // looks identical to a stream that never arrived.
+    juce::String deviceError;
+
     LevelMeter localMeter;
     LevelMeter remoteMeter;
 
