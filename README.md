@@ -36,8 +36,16 @@ which did the same job but required running OBS purely as an audio renderer.
 - **PIN** — keeps the window above the DAW.
 - Settings persist on change, so a crash doesn't cost you the setup.
 
+Minimising sends the app to the system tray rather than the taskbar — once configured there
+is nothing to look at. Left-click the tray icon to bring it back, right-click for Show/Quit.
+Closing the window still quits outright. Only one instance runs at a time; launching it
+again reveals the existing one.
+
 The VST3 can start the receiver automatically: with **Auto-start receiver app** enabled, a
-plugin instance in send mode launches the standalone if one isn't already running.
+plugin instance in send mode launches the standalone if one isn't already running. An
+auto-started receiver opens **straight to the tray** (via `--tray`) so it never jumps in
+front of the DAW, and is closed again when that plugin instance goes away — but only if that
+instance is the one that started it. A receiver you opened yourself is left alone.
 
 ### Sample rates
 

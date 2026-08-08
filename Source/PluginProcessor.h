@@ -132,6 +132,13 @@ private:
     // Tstream.exe or by the receiver being mid-shutdown.
     std::unique_ptr<juce::InterProcessLock> receiverLock;
 
+    // Non-null only if THIS instance started the receiver. That is exactly the
+    // ownership rule we want on shutdown: a receiver the user opened by hand,
+    // or one another plugin instance started, must outlive this one - so the
+    // handle's existence is the permission to close it, and no extra flag or
+    // pid bookkeeping is needed.
+    std::unique_ptr<juce::ChildProcess> launchedReceiver;
+
     std::atomic<bool> autoLaunch { true };
     juce::String autoLaunchStatus;
     juce::uint32 lastLaunchAttemptMs = 0;

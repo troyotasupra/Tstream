@@ -16,11 +16,55 @@
 
 #include <JuceHeader.h>
 #include <juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h>
+#include <BinaryData.h>
 
 namespace
 {
     const char* const kAlwaysOnTopKey = "alwaysOnTop";
 }
+
+// Tray presence, because this app's normal state is "running and not being
+// looked at" - it exists to feed a screen-share, and once configured there is
+// nothing to see. Minimising sends it here rather than to the taskbar.
+//
+// The close button still quits outright. Apps that silently keep running after
+// you close them are a common annoyance, and the tray is already the answer for
+// "get it out of the way" - so there is no need to overload close as well.
+class TstreamTrayIcon final : public SystemTrayIconComponent
+{
+public:
+    std::function<void()> onShowRequested;
+    std::function<void()> onQuitRequested;
+
+    TstreamTrayIcon()
+    {
+        const auto icon = ImageCache::getFromMemory (BinaryData::icon_png, BinaryData::icon_pngSize);
+        setIconImage (icon, icon);
+        setIconTooltip ("Tstream");
+    }
+
+    void mouseDown (const MouseEvent& e) override
+    {
+        if (e.mods.isPopupMenu())
+        {
+            PopupMenu m;
+            m.addItem (1, "Show Tstream");
+            m.addSeparator();
+            m.addItem (2, "Quit");
+
+            m.showMenuAsync (PopupMenu::Options(), [this] (int result)
+            {
+                if (result == 1 && onShowRequested != nullptr) onShowRequested();
+                if (result == 2 && onQuitRequested != nullptr) onQuitRequested();
+            });
+
+            return;
+        }
+
+        if (onShowRequested != nullptr)
+            onShowRequested();
+    }
+};
 
 // Adds the pin without touching anything else the base class does. Notably
 // closeButtonPressed() is NOT overridden - it calls savePluginState(), and
@@ -57,6 +101,24 @@ public:
         };
 
         Component::addAndMakeVisible (pinButton);
+
+        trayIcon.onShowRequested = [this] { restoreFromTray(); };
+        trayIcon.onQuitRequested = [] { JUCEApplication::getInstance()->systemRequestedQuit(); };
+    }
+
+    // Hide entirely rather than minimise. setVisible(false) also drops the
+    // taskbar button, which is the point - the tray icon becomes the single
+    // place the app lives while it is doing its job in the background.
+    void minimiseButtonPressed() override
+    {
+        setVisible (false);
+    }
+
+    void restoreFromTray()
+    {
+        setVisible (true);
+        setMinimised (false);
+        toFront (true);
     }
 
     void resized() override
@@ -71,6 +133,7 @@ public:
 
 private:
     TextButton pinButton { "PIN" };
+    TstreamTrayIcon trayIcon;
     PropertySet* settings = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TstreamStandaloneWindow)
@@ -99,11 +162,29 @@ public:
 
     const String getApplicationName() override           { return CharPointer_UTF8 (JucePlugin_Name); }
     const String getApplicationVersion() override        { return JucePlugin_VersionString; }
-    bool moreThanOneInstanceAllowed() override           { return false; }
-    void anotherInstanceStarted (const String&) override {}
+    bool moreThanOneInstanceAllowed() override            { return false; }
 
-    void initialise (const String&) override
+    // Only one receiver may run - a second would fight the first for UDP 9200
+    // and the receiver lock. But refusing silently is a trap once the app can
+    // be hidden in the tray: launching the shortcut would appear to do nothing
+    // at all. Treat a second launch as "show me the one that already exists".
+    //
+    // Unless it carries --tray, which means the VST3's auto-start raced an
+    // instance that was already up. That must stay hidden, since the user never
+    // asked to see it.
+    void anotherInstanceStarted (const String& commandLine) override
     {
+        if (mainWindow != nullptr && ! commandLine.containsIgnoreCase ("--tray"))
+            mainWindow->restoreFromTray();
+    }
+
+    void initialise (const String& commandLine) override
+    {
+        // Started by the VST3's auto-launch rather than by the user. The audio
+        // path and the tray icon come up exactly as normal; only the window
+        // stays hidden, so nothing jumps in front of the DAW.
+        const bool startHidden = commandLine.containsIgnoreCase ("--tray");
+
         mainWindow = std::make_unique<TstreamStandaloneWindow> (
             LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
             std::make_unique<StandalonePluginHolder> (appProperties.getUserSettings(),
@@ -114,7 +195,7 @@ public:
                                                       false),
             appProperties.getUserSettings());
 
-        mainWindow->setVisible (true);
+        mainWindow->setVisible (! startHidden);
     }
 
     void shutdown() override

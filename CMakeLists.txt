@@ -38,6 +38,13 @@ juce_add_plugin(Tstream
 
 juce_generate_juce_header(Tstream)
 
+# The tray icon needs the artwork at runtime. Embedding it rather than reading
+# Assets/icon.png off disk means the app has no dependency on its own install
+# location - which matters because it is launched from a shortcut, from the
+# VST3's auto-start, and from the build tree, and those are three different
+# working directories.
+juce_add_binary_data(TstreamData SOURCES Assets/icon.png)
+
 target_sources(Tstream
     PRIVATE
         Source/PluginProcessor.cpp
@@ -68,6 +75,7 @@ target_compile_definitions(Tstream
 target_link_libraries(Tstream
     PRIVATE
         juce::juce_audio_utils
+        TstreamData
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

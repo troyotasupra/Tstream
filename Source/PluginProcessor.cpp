@@ -72,6 +72,17 @@ TstreamAudioProcessor::~TstreamAudioProcessor()
 {
     stopTimer();
 
+    // Close the receiver, but only the one this instance started. A receiver
+    // the user opened themselves is theirs and is left alone.
+    //
+    // kill() rather than a graceful request because there is no cheap
+    // cross-process "please quit" channel here, and little is lost: the
+    // standalone writes its settings on every change rather than only on exit,
+    // so at worst a change made in the last few seconds misses PropertiesFile's
+    // batching timer.
+    if (launchedReceiver != nullptr && launchedReceiver->isRunning())
+        launchedReceiver->kill();
+
     if (receiverLock != nullptr)
         receiverLock->exit();
 }
@@ -133,8 +144,24 @@ void TstreamAudioProcessor::tryLaunchReceiver()
         return;
     }
 
-    autoLaunchStatus = exe.startAsProcess() ? "Launching receiver..."
-                                            : "Could not launch " + exe.getFileName();
+    // Launched as a tracked child rather than fire-and-forget, so this instance
+    // can close the one it started when the DAW shuts down.
+    //
+    // --tray: an auto-started receiver should not steal focus or throw a window
+    // in front of whatever the user is doing in the DAW. It has nothing to show
+    // - it is being started precisely because it is meant to run unattended.
+    // Launching it by hand from the shortcut still opens normally.
+    auto child = std::make_unique<juce::ChildProcess>();
+
+    if (child->start (exe.getFullPathName().quoted() + " --tray"))
+    {
+        launchedReceiver = std::move (child);
+        autoLaunchStatus = "Launching receiver...";
+    }
+    else
+    {
+        autoLaunchStatus = "Could not launch " + exe.getFileName();
+    }
 }
 
 void TstreamAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
