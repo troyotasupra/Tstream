@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "NetworkStreamer.h"
 #include "MonitorOutput.h"
+#include "OutputDeviceLock.h"
 
 class TstreamAudioProcessor : public juce::AudioProcessor,
                                private juce::Timer
@@ -100,6 +101,13 @@ public:
     // running in a DAW can find it without anything being hardcoded.
     static juce::File getReceiverPathFile();
 
+    /*  Holds the standalone's output on the device the user picked, instead of
+        letting a sleeping display move it. Lives on the processor rather than the
+        editor because it has to keep watching with the window closed - which is
+        exactly when the displays dim.
+    */
+    OutputDeviceLock& getOutputDeviceLock() noexcept { return outputDeviceLock; }
+
     // Bottom of the fader travel. Matches the meter's -60dB floor, and is
     // treated as true silence rather than -60dB of signal so the slider's
     // minimum is a real "off" position.
@@ -125,6 +133,7 @@ private:
 
     NetworkStreamer streamer;
     MonitorOutput monitorOutput;
+    OutputDeviceLock outputDeviceLock;
 
     // Held for the process's whole lifetime by the standalone, and used by
     // plugin instances purely as a "is a receiver already up?" probe. A lock

@@ -61,6 +61,11 @@ TstreamAudioProcessor::TstreamAudioProcessor()
         auto pathFile = getReceiverPathFile();
         pathFile.getParentDirectory().createDirectory();
         pathFile.replaceWithText (juce::File::getSpecialLocation (juce::File::currentExecutableFile).getFullPathName());
+
+        // Standalone only: this is the configuration that owns an output device
+        // and can therefore have one taken away by a sleeping display. Inside a
+        // DAW the host owns the device and there is nothing to hold.
+        outputDeviceLock.begin();
     }
     else
     {

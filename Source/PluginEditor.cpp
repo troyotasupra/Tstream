@@ -405,9 +405,17 @@ void TstreamAudioProcessorEditor::applyOutputDevice()
         deviceError.clear();
 
     if (! opened)
+    {
         refreshOutputDevices(); // snap the box back to whatever is actually live
+    }
     else
+    {
+        /*  Picking a device is a decision, so hold it. From here on a sleeping
+            display cannot quietly move playback onto something else.
+        */
+        processor.getOutputDeviceLock().setLockedDevice (chosen);
         persistSettings();
+    }
 }
 
 void TstreamAudioProcessorEditor::styleTextEditor (juce::TextEditor& editor)
@@ -698,6 +706,15 @@ void TstreamAudioProcessorEditor::timerCallback()
 
     if (deviceError.isNotEmpty())
         text << "\nOUTPUT DEVICE ERROR: " << deviceError;
+
+    // Refusing to fall back means silence, so say why rather than leaving the
+    // user to wonder where their audio went.
+    {
+        const auto waitingFor = processor.getOutputDeviceLock().getStatus();
+
+        if (waitingFor.isNotEmpty())
+            text << "\nWAITING FOR DEVICE: " << waitingFor;
+    }
 
     auto& monitor = processor.getMonitorOutput();
 

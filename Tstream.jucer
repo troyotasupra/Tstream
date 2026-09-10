@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="nS7r34m1" name="Tstream" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="com.troydev.tstream" companyName="TroyDev"
-              companyCopyright="TroyDev" useAppConfig="0" addUsingNamespaceToJuceHeader="1"
+              bundleIdentifier="com.tslab.tstream" companyName="TsLab"
+              companyCopyright="TsLab" useAppConfig="0" addUsingNamespaceToJuceHeader="1"
               jucerFormatVersion="1" displaySplashScreen="0" pluginFormats="buildVST3"
               pluginCharacteristicsValue="" pluginName="Tstream" pluginDesc="Stream audio over the network between DAW instances"
-              pluginManufacturer="TroyDev" pluginManufacturerCode="Tdev" pluginCode="NStr"
+              pluginManufacturer="TsLab" pluginManufacturerCode="Tdev" pluginCode="NStr"
               pluginChannelConfigs="{1, 1}, {2, 2}" pluginVST3Category="Fx">
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022" extraDefs="JUCE_IGNORE_VST3_MISMATCHED_PARAMETER_ID_WARNING=1">

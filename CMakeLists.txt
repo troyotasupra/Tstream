@@ -17,8 +17,8 @@ set(TSTREAM_JUCE_DIR "C:/Users/troyo/Downloads/juce-9.0.0-windows/JUCE" CACHE PA
 add_subdirectory(${TSTREAM_JUCE_DIR} JUCE)
 
 juce_add_plugin(Tstream
-    COMPANY_NAME "TroyDev"
-    BUNDLE_ID "com.troydev.tstream"
+    COMPANY_NAME "TsLab"
+    BUNDLE_ID "com.tslab.tstream"
     PLUGIN_MANUFACTURER_CODE Tdev
     PLUGIN_CODE NStr
     FORMATS VST3 Standalone
@@ -51,6 +51,7 @@ target_sources(Tstream
         Source/PluginEditor.cpp
         Source/NetworkStreamer.cpp
         Source/MonitorOutput.cpp
+        Source/OutputDeviceLock.cpp
         Source/StandaloneApp.cpp)
 
 target_compile_definitions(Tstream
