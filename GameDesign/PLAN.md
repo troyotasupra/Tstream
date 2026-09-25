@@ -24,11 +24,24 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 | **Survivors / traders** *(optional)* | A floating market and radio contacts that sell fuel and ammo and give leads. |
 
 ## Boats
-- Engine boats with fuel, throttle and real wave handling: you catch air off swells and lose thrust when the prop leaves the water.
-- Damage that matters: a shot-up engine smokes and sputters, and hull holes let water in until you patch and bail.
-- Progression: jon boat → center-console → RHIB → ex-military patrol boat.
-- Mounted weapons and searchlights on later boats.
-- Mercs can pull alongside and board you, which is the signature fight.
+
+**You start with nothing.** The crew washes up and has to build a raft from driftwood, barrels, rope and scrap. You paddle it at first, then bolt on a salvaged outboard motor once you find one.
+
+**Getting better boats (there is no shop):**
+- **Find:** wrecked and abandoned boats on beaches, reefs and in bunker docks. You have to repair them before they run: patch the hull, fix the engine, find fuel.
+- **Take:** kill a merc crew and their boat is yours, if it's still afloat.
+- **Repair and improve:** a boat is only as good as the parts you put into it: engines, hull plating, gun mounts, searchlights.
+
+**Stealing works both ways:**
+- Mercs can board and take your boat. If you leave it anchored unguarded while you raid a bunker, it might be gone when you come back.
+- Leaving someone on watch becomes a real crew decision.
+- A stolen boat can be tracked down and taken back.
+
+**How boats handle:**
+- Realistic handling: weight, momentum, waves, fuel and throttle all matter.
+- Damage matters: a shot-up engine smokes and sputters, and hull holes let water in until you patch and bail.
+- Rough progression: raft → patched-up small boats → merc speedboats and RHIBs → ex-military patrol boat.
+- Mercs pull alongside and board, which is the signature fight.
 
 ## Loot
 - **Military:** old rifles, pistols, grenades, flares, night vision, radios, gas masks, keycards, maps, documents.
@@ -70,7 +83,7 @@ The military is searching the island facilities for something it lost. What that
 6. Merc boats that chase and board
 7. Boat damage and repair
 8. The military faction and a heat system
-9. Harbor, upgrades and boat tiers
+9. Raft building, boat salvage and repair, and boat theft
 10. Playable slice: 3 islands, 3 facilities, first chapter of the story
 
 ## Open design decisions
