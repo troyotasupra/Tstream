@@ -49,29 +49,13 @@ Facilities are gated by keycards, generators you have to fuel, and explosives.
 - **Co-op crew.** Friends share one boat: one drives, one mans the gun, one bails water.
 - **First-person** everywhere, including at the helm.
 - **Death:** you lose everything you were carrying, but it stays in the world where you fell. You start over, then go back and get it when you're strong enough. If your boat sinks, it stays on the seabed.
-- **The lost thing:** alien technology that turns blood into gold.
 
-## The lost thing: the Aurum Device
-Decades ago the military recovered something non-human and buried it under the islands to study. It turns blood into gold. The research went wrong, the facilities were sealed, and the device (and pieces of it) were lost.
-
-**Why everyone is here:**
-- **The military** wants it back, to control or weaponize it, and to keep it quiet.
-- **The mercenaries** heard the rumor of gold. They're a gold rush with guns.
-- **You** arrived with nothing and found out what's under the islands.
-
-**How it shows up in the world:**
-- **Gilded bodies.** Facility staff frozen as gold statues where they died. They're valuable, so mercs hunt them, and they're a creepy clue to what happened.
-- **Shards.** Fragments of the device scattered through the facilities. Blood spilled near a shard turns to gold, so fights near a shard literally pay out. That makes shard rooms the most fought-over spots on the map.
-- **Blood price.** You can bleed yourself on a shard for gold: trade health for money. It's a risky shortcut when you're broke after a death.
-- **Gold sickness.** Too much exposure and your own blood starts turning. You get heavier, slower and harder to heal, but maybe tougher. Cured, or managed, with a rare medicine.
-- **Deeper facilities, stronger effects,** leading to the source device in the final facility.
-
-**The ending question:** destroy it, hand it to the military, sell it to the merc boss, or keep it.
+## The lost thing (undecided)
+The military is searching the island facilities for something it lost. What that is hasn't been decided yet.
 
 ## Death and recovery
 - When you die, your gear drops in a marked stash where you fell. You respawn at harbor with nothing.
 - The stash stays until you recover it. Mercs roaming nearby can find and take it, so the longer you wait, the riskier it gets.
-- If you died near a shard, your body is gilded too. It's worth money to whoever gets there first, you included.
 - Crewmates can recover each other's stashes, or revive you if they reach you fast enough.
 - A sunk boat stays on the seabed with its cargo. Dive for it, or salvage parts from it.
 
@@ -90,6 +74,5 @@ Decades ago the military recovered something non-human and buried it under the i
 ## Open design decisions
 - Arcade or realistic boat handling?
 - Setting: a real region or a fictional archipelago? When were the facilities built?
-- Is the device alive or intelligent? Does it want anything?
-- Is gold the currency, or is it something you sell for money?
+- What did the military lose?
 - Crew size: 2, 3 or 4 players?
