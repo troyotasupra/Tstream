@@ -47,6 +47,7 @@ Facilities are gated by keycards, generators you have to fuel, and explosives.
 
 ## Locked-in decisions
 - **Co-op crew of up to 4.** Friends share one boat: driver, gunner, and two more to repair, bail, navigate or go ashore. It should still be playable with fewer players.
+- **Realistic boat handling.** Weight, momentum, wave behavior and engine limits all matter. Skill at driving the boat counts.
 - **First-person** everywhere, including at the helm.
 - **Death:** you lose everything you were carrying, but it stays in the world where you fell. You start over, then go back and get it when you're strong enough. If your boat sinks, it stays on the seabed.
 
@@ -72,6 +73,5 @@ The military is searching the island facilities for something it lost. What that
 10. Playable slice: 3 islands, 3 facilities, first chapter of the story
 
 ## Open design decisions
-- Arcade or realistic boat handling?
 - Setting: a real region or a fictional archipelago? When were the facilities built?
 - What did the military lose?
