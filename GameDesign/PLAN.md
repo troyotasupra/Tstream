@@ -46,7 +46,7 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 Facilities are gated by keycards, generators you have to fuel, and explosives.
 
 ## Locked-in decisions
-- **Co-op crew.** Friends share one boat: one drives, one mans the gun, one bails water.
+- **Co-op crew of up to 4.** Friends share one boat: driver, gunner, and two more to repair, bail, navigate or go ashore. It should still be playable with fewer players.
 - **First-person** everywhere, including at the helm.
 - **Death:** you lose everything you were carrying, but it stays in the world where you fell. You start over, then go back and get it when you're strong enough. If your boat sinks, it stays on the seabed.
 
@@ -75,4 +75,3 @@ The military is searching the island facilities for something it lost. What that
 - Arcade or realistic boat handling?
 - Setting: a real region or a fictional archipelago? When were the facilities built?
 - What did the military lose?
-- Crew size: 2, 3 or 4 players?
