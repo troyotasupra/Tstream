@@ -148,9 +148,21 @@ Inspired by the capture escapes in Sons of the Forest.
 - Codes change regularly and differ by faction and merc crew, so old intel goes stale.
 
 **Dying for real** (drowning, sharks, falls, or when nobody takes you alive):
-- You respawn at your camp's bed with nothing.
 - Your gear stays where you fell until you recover it. Mercs nearby can find and take it, so waiting is risky.
 - A sunk boat stays on the seabed with its cargo. Dive for it, or salvage it.
+- You come back at your home island with nothing: see *The mermaids* below.
+
+### The mermaids *(idea, not locked in)*
+Instead of a plain respawn, something in the water brings you home.
+
+How this differs from Sea of Thieves:
+- **Never seen clearly.** In Sea of Thieves the mermaid appears beside you and you swim to her. Here you never see them properly: a shape in dark water, a hand on your arm, a face half-lit as you black out. Then you wake on your home beach, coughing up seawater.
+- **Not on demand.** They're not a fast-travel button for when you fall off the boat. They only come when you would otherwise die.
+- **Unsettling, not friendly.** Nobody knows what they are or why they help. There are small wrong details: scratches on your arm, seaweed you've never seen growing on the island, wet footprints leading out of the sea toward your camp.
+- **Payment.** They take something each time, like a random item from your camp stash or a trinket you were carrying, and leave odd things in return: shells, old coins, pieces of wrecks.
+- **A relationship.** Leaving offerings at a tide pool on your home island makes them more reliable. Neglect them and they're slower to come, so you wake further away, or badly hurt.
+- **The military knows.** Bunker documents mention "the things in the water" as a way to hint at a bigger mystery, without it having to be the lost thing.
+- **Grounded.** They never fight for you and never appear during gameplay. They're a rumor the players live through, not a creature in the game.
 
 ## Milestones
 1. The boat feels great on the ocean
