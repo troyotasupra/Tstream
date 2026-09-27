@@ -23,6 +23,26 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 | **Military** | Patrols, restricted zones, searchlights and helicopters. Dangerous if they spot you, but they also attack mercs. |
 | **Survivors / traders** *(optional)* | A floating market and radio contacts that sell fuel and ammo and give leads. |
 
+## Mercenaries
+
+**Rival crews, not one army.** Several merc gangs work the islands, and they hate each other almost as much as they hate you. Each crew has its own:
+- **Territory:** islands, camps, docks and fuel depots it controls.
+- **Style:** how it fights, what boats it runs and what guns it carries. For example, one crew could be fast and reckless with speedboats and SMGs, one disciplined ex-soldiers with rifles and a gunboat, and one scavengers who set traps and ambushes.
+- **Leader:** a boss who can be hunted down.
+
+**Territory:**
+- Clear a camp and that area is safer for a while, until the crew (or a rival) moves back in.
+- When one crew weakens, rival crews expand into its territory, so the map shifts over time.
+- You can play crews against each other: lead one gang's boats into another's waters, or steal from one and let the other take the blame.
+
+**Escalation:** each crew tracks how much you've hurt it. The more damage you do, the harder it hunts you:
+1. Ignored: you're just another boat.
+2. Noticed: patrols attack on sight.
+3. Hunted: ambushes at your usual spots, and raids on your anchored boat.
+4. War: the crew sends its best boats and fighters after you, and the boss gets involved.
+
+Escalation cools off over time, or drops sharply if you kill the crew's leader.
+
 ## Boats
 
 **You start with nothing.** The crew washes up and has to build a raft from driftwood, barrels, rope and scrap. You paddle it at first, then bolt on a salvaged outboard motor once you find one.
