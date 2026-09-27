@@ -177,7 +177,12 @@ Crewmates can tattoo each other, and you can tattoo yourself.
 **Why it matters in play:**
 - **Tattoos are permanent.** They survive death, capture and mermaid rescues. They're the one thing you never lose, so they become your crew's history.
 - **Crew identity:** a matching crew mark.
-- **Disguises:** merc crews have their own tattoos. Faking a crew's tattoo helps you pass as one of them, while your own crew mark can blow your cover if a guard sees it. Long sleeves and gloves can hide it.
+- **Disguises:** merc crews have their own tattoos. You fake one with **markers**, not ink:
+  - A marker "tattoo" helps you pass as one of that crew.
+  - It washes off with water: swimming, rain, sweat and sea spray all wear it down. It fades gradually, so the fake gets less convincing the longer you're out.
+  - A faded fake is worse than none: a guard who spots a smudged crew mark knows you're an impostor.
+  - Markers are a scarce loot item, so a fresh fake has to be planned: stay dry on the way in, or redraw it on the spot.
+  - Your own real crew tattoo can blow your cover if a guard sees it. Long sleeves and gloves can hide it.
 - **Infection risk:** a dirty needle can cause an infection (it ties into survival). Boil or sterilize it first.
 - **The mermaids leave marks:** after a rescue you sometimes wake with a faint mark you didn't make. It could slowly form a pattern over the game.
 
