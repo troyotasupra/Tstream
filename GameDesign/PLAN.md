@@ -152,7 +152,7 @@ Inspired by the capture escapes in Sons of the Forest.
 - A sunk boat stays on the seabed with its cargo. Dive for it, or salvage it.
 - You come back at your home island with nothing: see *The mermaids* below.
 
-### The mermaids *(idea, not locked in)*
+### The mermaids
 Instead of a plain respawn, something in the water brings you home.
 
 How this differs from Sea of Thieves:
@@ -163,6 +163,23 @@ How this differs from Sea of Thieves:
 - **A relationship.** Leaving offerings at a tide pool on your home island makes them more reliable. Neglect them and they're slower to come, so you wake further away, or badly hurt.
 - **The military knows.** Bunker documents mention "the things in the water" as a way to hint at a bigger mystery, without it having to be the lost thing.
 - **Grounded.** They never fight for you and never appear during gameplay. They're a rumor the players live through, not a creature in the game.
+
+## Tattoos
+
+Crewmates can tattoo each other, and you can tattoo yourself.
+
+**Doing it:**
+- **Crafted kit:** a needle from scrap or a sharpened bone, and ink from charcoal, soot, squid ink or gunpowder (like a prison tattoo).
+- **Freehand or stencil:** draw directly on the skin, or trace stencils found in the world (military insignia, merc crew symbols, old sailor designs).
+- **Steadiness matters:** on land the lines come out clean. On a rocking boat they wobble, and a crewmate bumping you ruins a line. Bad tattoos are part of the fun.
+- **On yourself:** you can only reach your arms, hands, legs and chest, which you tattoo from first person. Anything else needs a crewmate, or a mirror found in the world.
+
+**Why it matters in play:**
+- **Tattoos are permanent.** They survive death, capture and mermaid rescues. They're the one thing you never lose, so they become your crew's history.
+- **Crew identity:** a matching crew mark.
+- **Disguises:** merc crews have their own tattoos. Faking a crew's tattoo helps you pass as one of them, while your own crew mark can blow your cover if a guard sees it. Long sleeves and gloves can hide it.
+- **Infection risk:** a dirty needle can cause an infection (it ties into survival). Boil or sterilize it first.
+- **The mermaids leave marks:** after a rescue you sometimes wake with a faint mark you didn't make. It could slowly form a pattern over the game.
 
 ## Milestones
 1. The boat feels great on the ocean
