@@ -19,8 +19,8 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 ## Factions
 | Faction | Role |
 |---|---|
-| **Mercenaries** | Modern pirates in speedboats and RHIBs. They chase, shoot and board your boat, and camp loot spots. This is the main enemy. |
-| **Military** | Patrols, restricted zones, searchlights and helicopters. Dangerous if they spot you, but they also attack mercs. |
+| **Mercenaries** | Rival crews of modern pirates. They chase, shoot and board your boat, fight over territory, and hunt you harder the more you hurt them. |
+| **Military** | Grows stronger over time. Can be fought at any time, and has the best loot in the game. They also attack mercs. |
 | **Survivors / traders** *(optional)* | A floating market and radio contacts that sell fuel and ammo and give leads. |
 
 ## Mercenaries
@@ -42,6 +42,20 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 4. War: the crew sends its best boats and fighters after you, and the boss gets involved.
 
 Escalation cools off over time, or drops sharply if you kill the crew's leader.
+
+## Military
+
+**Their presence grows over time.** The military is closing in on whatever it lost, and the islands change as it does:
+1. **Early:** a few scout boats, a distant helicopter now and then, a supply drop offshore. Mostly rumors.
+2. **Mid:** forward outposts on the islands, regular sea patrols, restricted zones around key bunkers, and searchlights at night.
+3. **Late:** a heavy presence. Helicopters, armed patrol boats, drones, checkpoints, and soldiers clearing bunkers ahead of you.
+
+**You can fight them any time, if you can survive it.**
+- Soldiers are better trained, better armed and better coordinated than mercs.
+- Military outposts and supply drops have the best loot in the game: modern rifles, armor, night vision, explosives and military boats.
+- Attacking them raises an alert level. Push it too high and they send reinforcements, a helicopter or a gunboat.
+- They fight the mercs as well. Luring a merc crew into a patrol is a real tactic.
+- Their progress and yours are linked: the deeper they get into the bunkers, the more of the islands they lock down. That makes getting there first a race.
 
 ## Boats
 
