@@ -104,14 +104,47 @@ Escalation cools off over time, or drops sharply if you kill the crew's leader.
 - **Boat parts:** outboard motors, engines, props, hull patches, fuel.
 - **Crafting materials:** scrap, rope, cloth, plastic and electronics.
 
-## Islands and underground facilities
-- A flooded submarine pen (swim through air pockets)
-- A radar station with a collapsed lower level
-- A weapons-testing lab
-- A Cold War comms bunker (lore and documents)
-- A hidden dry dock that unlocks the military patrol boat
+## Bunkers
+Military-style bunkers with the same feel as the caves and bunkers in Sons of the Forest: tight, dark, tense, and satisfying to clear.
 
-Facilities are gated by keycards, generators you have to fuel, and explosives.
+**Modular:**
+- Built from interchangeable pieces (corridors, blast doors, bunk rooms, armories, generator rooms, stairwells, flooded sections, collapsed tunnels), so there can be many bunkers that each feel different.
+- Small bunkers are a single hatch and a few rooms. Big ones are multi-level complexes that tie into the story.
+- Special one-off bunkers anchor the story: the flooded sub pen, the radar station, the weapons lab, the comms bunker and the hidden dry dock.
+
+**Occupied or abandoned:**
+- **Occupied:** a merc crew or a military unit is holding it. You fight or sneak your way in.
+- **Abandoned:** empty of people, but dark, flooded, booby-trapped or collapsing.
+- The state changes over time: a bunker you cleared can be taken by a merc crew, and the military sweeps them as it advances.
+
+**Getting through:** keycards, generators that need fuel, jammed blast doors, flooded sections to swim or pump out, collapsed tunnels you dig or blow through, and old traps and tripwires.
+
+**Claim it:**
+- Once cleared, a bunker can be claimed as your crew's vault. It's safe, strong storage underground while you build above ground.
+- You can restore power, lock the doors, and set traps of your own.
+- Claimed bunkers can be raided. Mercs and the military want them back, especially once your notoriety is high.
+
+## Building and defenses
+**Build above your bunker:** walls, watchtowers, gates, gun positions and trenches that protect the entrance.
+
+**Two ways to build:**
+- **Crafted:** quick and cheap, but weak: wooden walls, spike barricades, lookout platforms.
+- **Salvaged:** existing military structures can be taken apart and rebuilt at your base: barbed wire fences, chain-link, steel plates, tank traps, guard posts and gun emplacements.
+
+**Digging:**
+- The island can be dug out to a limit (bedrock stops you; near the beach the hole floods with seawater).
+- Dig trenches, foxholes, firing pits, hidden stash holes, or clear the entrance of a buried bunker.
+- **Sandbags:** dig out an area, fill bags with the sand, and stack them into walls and gun nests. It's cheap and strong, but slow, which makes it good crew work.
+
+**Concrete:**
+- Found as bags of dry cement in bunkers, supply drops and wrecks.
+- **Keep it dry.** If a bag gets wet (rain, sea spray, a leaky boat, a dropped bag in the surf) it hardens into a useless brick, so transporting it matters. Hardened bags can still be stacked as crude blocks.
+- **Mix it** with water and sand. Once mixed, it's on a clock: pour it before it sets.
+- **Build forms** from wood by placing plans, either snapped to a grid or placed freely for odd shapes.
+- **Fill the form** with what it needs first, like rebar or scrap metal for strength.
+- **Carry it in buckets** and pour. The concrete is simulated as a real flowing material: it pours, spreads and fills the form. A badly built form leaks or bursts. Too much water makes it weak, too little and it won't flow.
+- **Curing:** the concrete needs time to set before you pull the forms off. Once set, it's the strongest thing you can build, and it's bulletproof.
+- It turns base building into a real crew project: one mixes, two haul buckets, one keeps watch.
 
 ## Locked-in decisions
 - **Co-op crew of up to 4.** Friends share one boat: driver, gunner, and two more to repair, bail, navigate or go ashore. It should still be playable with fewer players.
@@ -196,8 +229,9 @@ Crewmates can tattoo each other, and you can tattoo yourself.
 7. Boat damage and repair
 8. The military faction and a heat system
 9. Capture and escape, disguises and codes
-10. Raft building, boat salvage and repair, and boat theft
-11. Playable slice: 3 islands, 3 facilities, first chapter of the story
+10. Claiming bunkers, building, digging, sandbags and concrete
+11. Raft building, boat salvage and repair, and boat theft
+12. Playable slice: 3 islands, 3 facilities, first chapter of the story
 
 ## Open design decisions
 - When were the facilities built, and by whom?
