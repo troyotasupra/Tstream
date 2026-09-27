@@ -43,11 +43,32 @@ Sail out → scout an island or wreck → explore a facility on foot → loot ge
 - Rough progression: raft → patched-up small boats → merc speedboats and RHIBs → ex-military patrol boat.
 - Mercs pull alongside and board, which is the signature fight.
 
+## Weapons
+
+**Crafted first, looted later.**
+- **Early game (crafted):** spears, a machete from scrap, a bow, fishing-spear guns, pipe shotguns, Molotovs, and scrap-metal armor.
+- **Later (looted):** old military rifles, pistols, shotguns, grenades and flares from bunkers, plus modern guns taken off dead mercs.
+- Crafted weapons stay useful. A quiet bow still matters when the crew wants to avoid attention.
+
+**Realistic gunplay:**
+- A few hits kill, for players and enemies alike.
+- Real recoil and bullet drop, with no crosshair when firing from the hip.
+- Old military guns can jam and wear down, and need cleaning and parts.
+- Ammo is scarce, and each gun uses its own caliber.
+- Shooting from a moving boat is hard: the boat rocks and bounces on the waves.
+- Gunshots carry, so mercs and the military can hear you.
+
+## Survival (medium)
+- **Hunger and thirst** matter but don't nag. Fish, gather coconuts and fruit, hunt, collect rainwater, and boil or filter water.
+- **Injuries:** bleeding needs bandages and deeper wounds need a med kit. Being hurt slows you down and makes your aim shaky.
+- **Sun and heat:** days are hot, and night is dark and dangerous.
+- **Crafting** uses what the islands and wrecks provide: driftwood, rope, scrap metal, cloth, plastic and parts.
+
 ## Loot
-- **Military:** old rifles, pistols, grenades, flares, night vision, radios, gas masks, keycards, maps, documents.
-- **Survival:** food, water, med kits, fuel, tools, batteries, scuba gear.
-- **Boat parts:** engine upgrades, props, hull patches.
-- Old military gear is worn, so weapons can jam.
+- **Military:** old guns, ammo, grenades, flares, night vision, radios, gas masks, keycards, maps, documents.
+- **Survival:** canned food, water, med kits, fuel, tools, batteries, scuba gear.
+- **Boat parts:** outboard motors, engines, props, hull patches, fuel.
+- **Crafting materials:** scrap, rope, cloth, plastic and electronics.
 
 ## Islands and underground facilities
 - A flooded submarine pen (swim through air pockets)
