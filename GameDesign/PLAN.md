@@ -118,16 +118,39 @@ Facilities are gated by keycards, generators you have to fuel, and explosives.
 - **Realistic boat handling.** Weight, momentum, wave behavior and engine limits all matter. Skill at driving the boat counts.
 - **Setting:** a made-up island chain with a tropical paradise look: clear turquoise water, white sand, palms, jungle and reefs. The paradise surface hides abandoned military bunkers underneath.
 - **First-person** everywhere, including at the helm.
-- **Death:** you lose everything you were carrying, but it stays in the world where you fell. You start over, then go back and get it when you're strong enough. If your boat sinks, it stays on the seabed.
+- **Losing a fight:** you're usually captured, not killed. You wake up tied up in the enemy's camp and have to escape and get your gear back. If you die for real, you lose everything you carried, but it stays where you fell for you to recover.
 
 ## The lost thing (undecided)
 The military is searching the island facilities for something it lost. What that is hasn't been decided yet.
 
-## Death and recovery
-- When you die, your gear drops in a marked stash where you fell. You respawn at harbor with nothing.
-- The stash stays until you recover it. Mercs roaming nearby can find and take it, so the longer you wait, the riskier it gets.
-- Crewmates can recover each other's stashes, or revive you if they reach you fast enough.
-- A sunk boat stays on the seabed with its cargo. Dive for it, or salvage parts from it.
+## Home base
+- **An island camp:** shelter, storage, crafting benches, a dock and a bed. It can be raided by mercs.
+- **A boat that becomes a mobile base:** bigger boats get bunks, storage and a workbench, so the crew can live at sea.
+
+## Downed, captured and escape
+Inspired by the capture escapes in Sons of the Forest.
+
+**When enemies take you down, you don't just die: you get captured.**
+- You wake up tied up in the camp of whoever took you: a merc crew's camp or a military holding site.
+- Your gear is gone, but it's stored somewhere in that camp (a locker, a tent, the boss's quarters). You can take it back on your way out.
+- **Guards scale with notoriety.** A nobody gets one bored guard. A crew that's been at war with the mercs, or high on the military's alert, gets more guards, better guards, locked cells and patrols.
+
+**Escaping:**
+- Work free of your restraints (a hidden blade, a sharp edge, or a timed struggle while the guard isn't looking).
+- Sneak or fight your way out, then steal a skiff from the camp's dock to get away.
+- **Crew rescue:** crewmates still free can mount a rescue and break you out.
+
+**Disguises:**
+- Take a guard's gear to blend in with that faction.
+- It isn't perfect: get too close, act strangely, or carry the wrong weapon, and they start to notice.
+- Get close enough and a soldier or merc may **challenge you for a code** to prove you're one of them. Wrong answer, or no answer, and your cover is blown.
+- **Codes come from intel:** radio intercepts, documents in bunkers and outposts, codebooks on officers, or interrogating a captured enemy.
+- Codes change regularly and differ by faction and merc crew, so old intel goes stale.
+
+**Dying for real** (drowning, sharks, falls, or when nobody takes you alive):
+- You respawn at your camp's bed with nothing.
+- Your gear stays where you fell until you recover it. Mercs nearby can find and take it, so waiting is risky.
+- A sunk boat stays on the seabed with its cargo. Dive for it, or salvage it.
 
 ## Milestones
 1. The boat feels great on the ocean
@@ -138,8 +161,9 @@ The military is searching the island facilities for something it lost. What that
 6. Merc boats that chase and board
 7. Boat damage and repair
 8. The military faction and a heat system
-9. Raft building, boat salvage and repair, and boat theft
-10. Playable slice: 3 islands, 3 facilities, first chapter of the story
+9. Capture and escape, disguises and codes
+10. Raft building, boat salvage and repair, and boat theft
+11. Playable slice: 3 islands, 3 facilities, first chapter of the story
 
 ## Open design decisions
 - When were the facilities built, and by whom?
