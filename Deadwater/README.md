@@ -16,3 +16,7 @@ Co-op naval survival shooter in Unreal Engine 5. The design plan is in `../GameD
 | Look around | Mouse | Right stick |
 
 The top-left readout shows speed, throttle, fuel, engine health, and whether the prop is in the water.
+
+## Development PC
+Windows 11, AMD Ryzen 5 2600X (6 cores), 32 GB RAM. Graphics card: not yet known.
+Effects are tuned to run at playable frame rates on this machine first.
